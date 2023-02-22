@@ -16,7 +16,7 @@ const Homepage = () => {
     return (
         <>
             <div className="flex h-screen items-center justify-center">
-                <div className="max-w-md w-full bg-white rounded-lg shadow-lg px-4 py-6">
+                <div className="max-w-md w-full bg-white rounded-lg shadow-2xl px-4 py-6">
                     <div className="flex flex-col items-center gap-3">
                         <h2 className="text-2xl font-semibold mb-2">Input your username github</h2>
                         <input
