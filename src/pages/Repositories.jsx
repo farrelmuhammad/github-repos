@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { getRepos } from '../store/reposReducer';
 
 const Repositories = () => {
+    const dispatch = useDispatch();
     const repos = useSelector((state) => state.repos);
     const [sortBy, setSortBy] = useState('stars');
+    const [isLoading, setIsLoading] = useState(true);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const username = searchParams.get('username');
+
+    useEffect(() => {
+        dispatch(getRepos(username))
+            .then(() => setIsLoading(false));
+    }, [dispatch]);
+
 
     const handleSort = (event) => {
         setSortBy(event.target.value);
@@ -21,37 +33,63 @@ const Repositories = () => {
     });
 
     return (
-        <div className="bg-gray-100 min-h-screen">
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-2xl font-bold text-gray-800">GitHub Repositories</h2>
-                    <div className="flex items-center">
-                        <span className="text-gray-600 mr-2">Sort by:</span>
-                        <select className="bg-white border border-gray-400 rounded-md py-1 px-3 text-gray-600 font-medium" value={sortBy} onChange={handleSort}>
-                            <option value="stars">Stars</option>
-                            <option value="date">Date</option>
-                            <option value="name">Name</option>
-                        </select>
-                    </div>
-                </div>
-                {sortedRepos.map((repo) => (
-                    <div key={repo.id} className="bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-xl">
-                        <h3 className="text-lg font-bold mb-2 text-gray-800 hover:text-blue-500">
-                            <a href={repo.html_url} target="_blank" rel="noreferrer">
-                                {repo.name}
-                            </a>
-                        </h3>
-                        <p className="text-gray-600 mb-2">{repo.description}</p>
+        <>
+            <div className="bg-gray-100 min-h-screen">
+                <div className="container mx-auto px-4 py-8">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-2xl font-bold text-gray-800">GitHub Repositories</h2>
                         <div className="flex items-center">
-                            <span className="inline-block bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                                {repo.language}
-                            </span>
-                            <span className="text-sm text-gray-500">{repo.stargazers_count} stars</span>
+                            <span className="text-gray-600 mr-2">Sort by:</span>
+                            <select className="bg-white border border-gray-400 rounded-md py-1 px-3 text-gray-600 font-medium" value={sortBy} onChange={handleSort}>
+                                <option value="stars">Stars</option>
+                                <option value="date">Date</option>
+                                <option value="name">Name</option>
+                            </select>
                         </div>
                     </div>
-                ))}
+                    {isLoading ? (
+                        <div className="flex items-center justify-center">
+                            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {sortedRepos.map((repo) => (
+                                <div key={repo.id} className="bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-xl">
+                                    <h3 className="text-lg font-bold mb-2 text-gray-800 hover:text-blue-500">
+                                        <a href={repo.html_url} target="_blank" rel="noreferrer">
+                                            {repo.name}
+                                        </a>
+                                    </h3>
+                                    <p className="text-gray-600 mb-2">{repo.description}</p>
+                                    <div className="flex items-center">
+                                        <span className="inline-block bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                                            {repo.language}
+                                        </span>
+                                        <span className="text-sm text-gray-500">{repo.stargazers_count} stars</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {/* {sortedRepos.map((repo) => (
+                        <div key={repo.id} className="bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-xl">
+                            <h3 className="text-lg font-bold mb-2 text-gray-800 hover:text-blue-500">
+                                <a href={repo.html_url} target="_blank" rel="noreferrer">
+                                    {repo.name}
+                                </a>
+                            </h3>
+                            <p className="text-gray-600 mb-2">{repo.description}</p>
+                            <div className="flex items-center">
+                                <span className="inline-block bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                                    {repo.language}
+                                </span>
+                                <span className="text-sm text-gray-500">{repo.stargazers_count} stars</span>
+                            </div>
+                        </div>
+                    ))} */}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

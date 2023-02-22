@@ -9,8 +9,8 @@ const Homepage = () => {
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        dispatch(getRepos(username))
-        navigate('/repositories')
+        // dispatch(getRepos(username))
+        navigate(`/repositories?username=${username}`)
     }
 
     return (
