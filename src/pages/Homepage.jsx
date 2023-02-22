@@ -13,6 +13,12 @@ const Homepage = () => {
         navigate(`/repositories?username=${username}`)
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSubmit();
+        }
+    }
+
     return (
         <>
             <div className="flex h-screen items-center justify-center">
@@ -24,6 +30,7 @@ const Homepage = () => {
                             className="border-gray-300 border-2 rounded-lg py-2 px-4 w-full"
                             placeholder="Enter text here..."
                             defaultValue={username}
+                            onKeyDown={handleKeyDown}
                             onChange={(event) => setUsername(event.target.value)}
                         />
                         <button

@@ -92,9 +92,7 @@ const Repositories = () => {
                             ))}
                         </div>
                     )}
-                    {isLoading ? (
-                        <LoadingCard />
-                    ) : repos.length === 0 ? (
+                    {repos.length === 0 && !isLoading ? (
                         <div className="bg-white rounded-lg shadow-md p-4 mb-4">
                             <h3 className="text-lg font-bold mb-2 text-gray-800">No repositories found</h3>
                         </div>
