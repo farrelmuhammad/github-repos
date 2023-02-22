@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
@@ -33,18 +33,37 @@ const Repositories = () => {
     const repos = useSelector((state) => state.repos);
     const [sortBy, setSortBy] = useState('stars');
     const [isLoading, setIsLoading] = useState(true);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const username = searchParams.get('username');
 
     useEffect(() => {
-        dispatch(getRepos(username))
+        setIsLoading(true)
+        dispatch(getRepos(username, pageNumber))
             .then(() => setIsLoading(false));
-    }, [dispatch, username]);
+    }, [dispatch, username, pageNumber]);
+
+    useEffect(() => {
+        setPageNumber(1);
+        setHasMore(true);
+    }, [username])
 
     const handleSort = (event) => {
         setSortBy(event.target.value);
     };
+
+    const handleScroll = () => {
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 500 && hasMore && !isLoading) {
+            setPageNumber((prevPageNumber) => prevPageNumber + 1);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
 
     const sortedRepos = repos.sort((a, b) => {
         if (sortBy === 'stars') {
@@ -55,6 +74,12 @@ const Repositories = () => {
             return a.name.localeCompare(b.name);
         }
     });
+
+    const displayedRepos = sortedRepos.slice(0, pageNumber * 12);
+
+    useEffect(() => {
+        setHasMore(displayedRepos.length < sortedRepos.length);
+    }, [displayedRepos.length, sortedRepos.length]);
 
     return (
         <>
@@ -75,7 +100,7 @@ const Repositories = () => {
                         <LoadingCard />
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {sortedRepos.map((repo) => (
+                            {displayedRepos.map((repo) => (
                                 <div key={repo.id} className="bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-xl">
                                     <h3 className="text-lg font-bold mb-2 text-gray-800 hover:text-blue-500">
                                         <a href={repo.html_url} target="_blank" rel="noreferrer">
