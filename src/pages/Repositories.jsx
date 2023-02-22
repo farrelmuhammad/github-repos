@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { getRepos } from '../store/reposReducer';
 
@@ -125,6 +125,9 @@ const Repositories = () => {
                     ) : null}
                 </div>
             </div>
+            <Link to="/" className="fixed bottom-4 right-4 bg-blue-500 text-white py-3 px-4 rounded-full hover:bg-blue-600">
+                Back to Home
+            </Link>
         </>
     );
 };
