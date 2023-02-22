@@ -28,7 +28,7 @@ const Homepage = () => {
                         <input
                             type="text"
                             className="border-gray-300 border-2 rounded-lg py-2 px-4 w-full"
-                            placeholder="Enter text here..."
+                            placeholder="Enter username here..."
                             defaultValue={username}
                             onKeyDown={handleKeyDown}
                             onChange={(event) => setUsername(event.target.value)}
