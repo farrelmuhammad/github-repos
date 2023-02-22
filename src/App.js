@@ -9,7 +9,7 @@ function App() {
     <>
       <Routes>
         <Route exact path="/" element={<Homepage />} />
-        <Route path="/repository" element={<Repositories />} />
+        <Route path="/repositories" element={<Repositories />} />
       </Routes>
     </>
   );

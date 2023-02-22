@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getRepos } from '../store/reposReducer';
 
 const Homepage = () => {
+    const [username, setUsername] = useState('farrelmuhammad');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleSubmit = () => {
+        dispatch(getRepos(username))
+        navigate('/repositories')
+    }
+
     return (
         <>
             <div className="flex h-screen items-center justify-center">
@@ -11,9 +23,15 @@ const Homepage = () => {
                             type="text"
                             className="border-gray-300 border-2 rounded-lg py-2 px-4 w-full"
                             placeholder="Enter text here..."
-                            defaultValue={'farrelmuhammad'}
+                            defaultValue={username}
+                            onChange={(event) => setUsername(event.target.value)}
                         />
-                        <button className="bg-blue-500 text-white w-full py-2 px-4 rounded-lg">Submit</button>
+                        <button
+                            className="bg-blue-500 text-white w-full py-2 px-4 rounded-lg"
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </button>
                     </div>
                 </div>
             </div>

@@ -3,13 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getRepos } from '../store/reposReducer';
 
 const Repositories = () => {
-    const dispatch = useDispatch();
     const repos = useSelector((state) => state.repos);
     const [sortBy, setSortBy] = useState('stars');
-
-    useEffect(() => {
-        dispatch(getRepos('octocat'));
-    }, [dispatch]);
 
     const handleSort = (event) => {
         setSortBy(event.target.value);
