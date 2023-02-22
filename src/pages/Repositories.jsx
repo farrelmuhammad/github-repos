@@ -39,8 +39,7 @@ const Repositories = () => {
     useEffect(() => {
         dispatch(getRepos(username))
             .then(() => setIsLoading(false));
-    }, [dispatch]);
-
+    }, [dispatch, username]);
 
     const handleSort = (event) => {
         setSortBy(event.target.value);
@@ -93,22 +92,13 @@ const Repositories = () => {
                             ))}
                         </div>
                     )}
-                    {/* {sortedRepos.map((repo) => (
-                        <div key={repo.id} className="bg-white rounded-lg shadow-md p-4 mb-4 hover:shadow-xl">
-                            <h3 className="text-lg font-bold mb-2 text-gray-800 hover:text-blue-500">
-                                <a href={repo.html_url} target="_blank" rel="noreferrer">
-                                    {repo.name}
-                                </a>
-                            </h3>
-                            <p className="text-gray-600 mb-2">{repo.description}</p>
-                            <div className="flex items-center">
-                                <span className="inline-block bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                                    {repo.language}
-                                </span>
-                                <span className="text-sm text-gray-500">{repo.stargazers_count} stars</span>
-                            </div>
+                    {isLoading ? (
+                        <LoadingCard />
+                    ) : repos.length === 0 ? (
+                        <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+                            <h3 className="text-lg font-bold mb-2 text-gray-800">No repositories found</h3>
                         </div>
-                    ))} */}
+                    ) : null}
                 </div>
             </div>
         </>

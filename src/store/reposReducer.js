@@ -9,7 +9,7 @@ export const getRepos = (username) => async (dispatch) => {
     );
     dispatch({ type: GET_REPOS, payload: data });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
