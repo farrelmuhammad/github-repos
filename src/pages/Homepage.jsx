@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 import { getRepos } from '../store/reposReducer';
 
 const Homepage = () => {
@@ -42,9 +43,7 @@ const Homepage = () => {
                     </div>
                 </div>
             </div>
-            <footer className="bg-gray-100 text-center text-xs p-3 absolute bottom-0 w-full border-t border-gray-400">
-                &copy; 2023 Farrel Muhammad.
-            </footer>
+            <Footer />
         </>
     )
 }

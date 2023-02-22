@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import Footer from '../components/Footer';
 import { getRepos } from '../store/reposReducer';
 
 function LoadingCard() {
